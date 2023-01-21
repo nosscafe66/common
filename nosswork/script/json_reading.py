@@ -6,6 +6,8 @@ import glob
 import sys
 import os
 import json
+import logging
+from datetime import datetime, timedelta
 __author__ = "Kounosu Yuto <mail@example.com>"
 __status__ = "production"
 __version__ = "0.0.1"
@@ -19,12 +21,18 @@ PATH = (__file__)
 DIRNAME = os.path.dirname(__file__)
 BASENAME = os.path.basename(__file__)
 JSONFILENAME = str(DIRNAME).replace("script", "json") + "/" + ARGS[1]
+NOW_DATETIME = datetime.now()
+FILE_DATE = NOW_DATETIME.strftime('%Y%m%d%H%M%S')
 
 #メイン関数
 def main():
-    value = json_read(JSONFILENAME)
-    print(value)
-    transform_json_value(value)
+    try:
+        value = json_read(JSONFILENAME)
+        transform_json_value(value)
+        sys.exit(0)
+    except Exception as e:
+        logging.error(e)
+        raise
 
 # jsonファイルののバリューを読み取る
 
@@ -57,8 +65,10 @@ def json_read(JSONFILENAME):
 
 
 def transform_json_value(value):
-    pass
-
+    OUTPUTFILENAME=f'output_{FILE_DATE}.csv'
+    with open(OUTPUTFILENAME,"wt") as f:
+        for index,i in enumerate(range(len(value))):
+            f.write(f'{index},{value[i]}\n')
 
 if __name__ == "__main__":
     main()
