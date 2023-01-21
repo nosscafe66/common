@@ -20,7 +20,7 @@ DIRNAME = os.path.dirname(__file__)
 BASENAME = os.path.basename(__file__)
 JSONFILENAME = str(DIRNAME).replace("script", "json") + "/" + ARGS[1]
 
-
+#メイン関数
 def main():
     value = json_read(JSONFILENAME)
     print(value)
