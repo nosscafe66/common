@@ -1,20 +1,32 @@
 import json
+import os
+import re
 
-def main():  
-    with open('json/test.json')as f:
-        jsn = json.load(f)
-        print(jsn)
-    for jsn_key in jsn:
-        print(jsn_key)
-    for jsn_value in jsn.values():
-        print(jsn_value)
+file_path = "json/test.json"
 
-    json_open = open('json/test.json', 'r')
-    load_json = json.load(json_open)
+read_json = open(file_path, 'r')   #ファイルを開く
+json_load = json.load(read_json)   #開いたファイルをJSONとして読み込む
+JSON_MAIN = json_load["main"]    #test.jsonのmainの部分
+first_key = []   #first_keyという空のリスト作成
+first_value = []    #first_valueという空のリストを作成
+value = []
 
-    for value in load_json.values():
-        # print(value["key3"])
-        print()#value
+for get_json in JSON_MAIN:
+    first_key.append(get_json)
+    first_value.append(JSON_MAIN[get_json])
+    second_key = []
+    second_value = []
+    if re.search(r"{", str(JSON_MAIN[get_json])):
+        for secondkey in JSON_MAIN[get_json]:
+            second_key.append(get_json)
+            second_value.append(JSON_MAIN[get_json])
+            if re.search(r"{", str(JSON_MAIN[get_json][secondkey])):
+                print(JSON_MAIN[get_json][secondkey])
+            else:
+                value.append(JSON_MAIN[get_json][secondkey])
+    else:
+        value.append(JSON_MAIN[get_json])
+print(value)
+    
+    
 
-if __name__ == "__main__":
-    main()
